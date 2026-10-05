@@ -2,3 +2,4 @@
 
 ## Team Members 
 Ellen Sakoda
+Zoe Sun
