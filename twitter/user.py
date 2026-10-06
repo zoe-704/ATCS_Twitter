@@ -1,0 +1,10 @@
+class User:
+    def __init__(self, username, password, name, age):
+        self.username = username
+        self.password = password
+        self.name = name
+        self.birthday = age
+
+    def check_password(self, password_guess):
+        return self.password is password_guess
+    
