@@ -3,7 +3,7 @@ class User:
         self.username = username
         self.password = password
         self.name = name
-        self.birthday = age
+        self.age = age
 
     def check_password(self, password_guess):
         return self.password is password_guess
