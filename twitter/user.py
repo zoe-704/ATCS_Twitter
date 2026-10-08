@@ -6,5 +6,5 @@ class User:
         self.age = age
 
     def check_password(self, password_guess):
-        return self.password is password_guess
-    
+        return self.password == password_guess
+
