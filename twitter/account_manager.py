@@ -62,3 +62,26 @@ class AccountManager:
         self.users = {}
         for username, info in data.items():
             self.users[username] = User(username, info["password"], info["name"], info["age"])        
+
+    def delete_account(self, post_manager=None):
+        user = self.current_user
+        if user is None:
+            return False
+        # Delete all posts
+        if post_manager is not None:
+            post_manager.all_posts = [p for p in post_manager.all_posts if p.author is not user]
+            user.posts.clear()
+        # Remove them from followers/followings
+        for other in user.following:
+            if user in other.followers:
+                other.followers.remove(user)
+        for other in user.followers:
+            if user in other.following:
+                other.following.remove(user)
+        user.following.clear()
+        user.followers.clear()
+        # Remove account and log out                    
+        del self.users[user.username]
+        self.logout()
+        self.save_to_file()
+        return True
