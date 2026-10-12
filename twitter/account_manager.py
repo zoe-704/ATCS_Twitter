@@ -51,7 +51,8 @@ class AccountManager:
             data[username] = {
                 "password": user.password,
                 "name": user.name,
-                "age": user.age
+                "age": user.age,
+                "following" : [other.username for other in user.following]
             }    
         with open(self.filename, "w")as f:
             json.dump(data, f, indent=4)
@@ -60,8 +61,16 @@ class AccountManager:
         with open(self.filename, "r") as f:
             data = json.load(f)
         self.users = {}
+        # Make every user
         for username, info in data.items():
-            self.users[username] = User(username, info["password"], info["name"], info["age"])        
+            self.users[username] = User(username, info["password"], info["name"], info["age"]) 
+        # Reconnect follows once all users exist again    
+        for username, info in data.items():
+            user = self.users[username]
+            for other_name in info.get("following", []):
+                other = self.users.get(other_name)
+                if other is not None and not user.is_following(other):
+                    user.follow(other)       
 
     def delete_account(self, post_manager=None):
         user = self.current_user

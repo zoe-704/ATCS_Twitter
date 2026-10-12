@@ -1,11 +1,13 @@
 from account_manager import AccountManager, AgeTooLowError
 from post_manager import PostManager
 from user import AlreadyFollowingError, NotFollowingError, SelfFollowError
+from search import Search
 
 class Twitter:
     def __init__(self):
         self.accounts = AccountManager()
         self.posts = PostManager()
+        self.search = Search(self.accounts, self.posts)
 
     def run(self):
         print("Welcome to Twitter!")    
@@ -54,10 +56,12 @@ class Twitter:
 
         return True
 
-    def who_main_menu(self):
+    def show_main_menu(self):
         #TODO Zoe - add the posting features to the menu
         print("1. See who I follow and who follows me")
         print("2. Delete my account")
+        print("3. Search for account (to follow/unfollow an account)")
+
         print("0. Log out")
         choice = input("Pick an option: ")
 
@@ -66,6 +70,9 @@ class Twitter:
 
         elif choice == "2":
             self.delete_my_account()
+
+        elif choice == "3":
+            self.search_for_account()
 
         elif choice == "0":
             self.accounts.logout()
@@ -76,9 +83,9 @@ class Twitter:
         confirm = input("Are you sure? Type yes to delete your account: ")
         if confirm.lower() == "yes":
             self.accounts.delete_account(self.posts)
-            print("Your account was delted.")
+            print("Your account was deleted.")
         else:
-            print("Account not delted.")
+            print("Account not deleted.")
 
     def view_my_follows(self):
         # View all followers and following
@@ -86,3 +93,41 @@ class Twitter:
         print(f"\n{len(me.following)} following | {len(me.followers)} followers")
         print ("Following:", ", ".join("@" + user.username for user in me.following) or "nobody yet")
         print ("Followers:", ", ".join("@" + user.username for user in me.followers) or "nobody yet")
+
+    def search_for_account(self):
+        search_text = input("Search for an account (@___): ").strip()
+        if not search_text.startswith("@"):
+            print("Searches for users have to start with @")
+            return
+
+        other = self.search.search_user(search_text)
+        if other is None:
+            print("user does not exist")
+            return
+
+        me = self.accounts.current_user
+        print(f"\nFound: {other.name} (@{other.username})")
+        if other is me:
+            print("That's you!")
+            return
+
+        if me.is_following(other):
+            answer = input(f"Do you want to unfollow @{other.username}? (yes/no): ")
+        else:
+            answer = input(f"Do you want to follow @{other.username}? (yes/no): ")
+
+        if answer.lower() != "yes":
+            return
+
+        try:
+            if me.is_following(other):
+                self.accounts.unfollow_user(other.username)
+                print(f"You unfollowed @{other.username}")
+            else:
+                self.accounts.follow_user(other.username)
+                print(f"You followed @{other.username}")
+        except(AlreadyFollowingError, NotFollowingError, SelfFollowError) as e:
+            print(e)
+
+if __name__ == "__main__":
+    Twitter().run()

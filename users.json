@@ -1,0 +1,16 @@
+{
+    "ellensakoda": {
+        "password": "psw1",
+        "name": "Ellen",
+        "age": 16,
+        "following": [
+            "test1"
+        ]
+    },
+    "test1": {
+        "password": "psw1",
+        "name": "test1",
+        "age": 16,
+        "following": []
+    }
+}
