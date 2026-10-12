@@ -61,6 +61,7 @@ class Twitter:
         print("1. See who I follow and who follows me")
         print("2. Delete my account")
         print("3. Search for account (to follow/unfollow an account)")
+
         print("0. Log out")
         choice = input("Pick an option: ")
 
