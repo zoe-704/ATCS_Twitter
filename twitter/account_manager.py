@@ -72,16 +72,27 @@ class AccountManager:
             post_manager.all_posts = [p for p in post_manager.all_posts if p.author is not user]
             user.posts.clear()
         # Remove them from followers/followings
-        for other in user.following:
-            if user in other.followers:
-                other.followers.remove(user)
-        for other in user.followers:
-            if user in other.following:
-                other.following.remove(user)
-        user.following.clear()
-        user.followers.clear()
+        user.remove_all_follows()
         # Remove account and log out                    
         del self.users[user.username]
         self.logout()
+        self.save_to_file()
+        return True
+
+    def follow_user(self, username):
+        # Lstrip removes @ symbol from the start until it reaches a character that isn't @
+        # Thus, a username can be entered into this function with or without the @ symbol
+        other = self.users.get(username.lstrip("@"))
+        if self.current_user is None or other is None:
+            return False
+        self.current_user.follow(other)
+        self.save_to_file()
+        return True
+
+    def unfollow_user(self, username):
+        other = self.users.get(username.lstrip("@"))
+        if self.current_user is None or other is None:
+            return False
+        self.current_user.unfollow(other)
         self.save_to_file()
         return True
