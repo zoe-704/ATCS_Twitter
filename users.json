@@ -12,5 +12,11 @@
         "name": "test1",
         "age": 16,
         "following": []
+    },
+    "zoe": {
+        "password": "1",
+        "name": "z",
+        "age": 19,
+        "following": []
     }
 }

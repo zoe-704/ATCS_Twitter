@@ -13,7 +13,22 @@ class PostManager:
         self.all_posts.append(new_post)
         author.add_post(new_post)
         return new_post
-
+    
+    def get_post(self, post_id):
+        """
+        Find a post by its post_id
+        """
+        for post in self.all_posts:
+            if post.id == post_id:
+                return post
+        return None
+    
+    def get_all_posts(self):
+        """
+        Returns every post, newest first
+        """
+        return sorted(self.all_posts, key=lambda post: post.id, reverse=True)
+    
     def delete_post(self, author, post_id):
         """
         Deletes an author's post

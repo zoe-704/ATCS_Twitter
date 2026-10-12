@@ -33,12 +33,3 @@ class Post:
         tag = tag.lstrip("#").lower()
         hashtags = re.findall(r"#(\w+)", self.text.lower())
         return tag in hashtags
-    
-    def get_post(self, post_id):
-        """
-        Find a post by its post_id
-        """
-        for post in self.all_posts:
-            if post.id == post_id:
-                return post
-        return None
