@@ -1,5 +1,6 @@
 import json
 from user import User
+from post import Post
 
 class AgeTooLowError(Exception):
     """Raised when the user age is too low."""
@@ -80,6 +81,7 @@ class AccountManager:
         if post_manager is not None:
             post_manager.all_posts = [p for p in post_manager.all_posts if p.author is not user]
             user.posts.clear()
+            post_manager.save_to_file()
         # Remove them from followers/followings
         user.remove_all_follows()
         # Remove account and log out                    

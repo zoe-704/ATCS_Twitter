@@ -7,7 +7,8 @@ from post import Post
 class Twitter:
     def __init__(self):
         self.accounts = AccountManager()
-        self.posts = PostManager()
+        self.posts = PostManager("post.json")
+        self.posts.load_from_file(self.accounts.users)
         self.search = Search(self.accounts, self.posts)
 
     def run(self):
