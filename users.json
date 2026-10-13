@@ -12,5 +12,31 @@
         "name": "test1",
         "age": 16,
         "following": []
+    },
+    "zoe": {
+        "password": "1",
+        "name": "z",
+        "age": 19,
+        "following": []
+    },
+    "olivia": {
+        "password": "olivia",
+        "name": "olivia",
+        "age": 16,
+        "following": [
+            "a"
+        ]
+    },
+    "123": {
+        "password": "123",
+        "name": "123",
+        "age": 17,
+        "following": []
+    },
+    "a": {
+        "password": "a",
+        "name": "a",
+        "age": 18,
+        "following": []
     }
 }

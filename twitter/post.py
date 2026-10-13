@@ -6,7 +6,7 @@ class Post:
     MAX_POST_LENGTH = 300
     id_counter = count(1)
 
-    def __init__(self, author, text):
+    def __init__(self, author, text, post_id=None, timestamp=None):
         """
         Create a post length 1-300 characters
         ValueError: if text is empty or too long
@@ -16,10 +16,14 @@ class Post:
             raise ValueError("Your post can't be empty!")
         if len(text) > Post.MAX_POST_LENGTH:
             raise ValueError("There's too much text in your post!")
-        self.id = next(Post.id_counter) 
+        if post_id is None:
+            post_id = next(Post.id_counter)
+        if timestamp is None:
+            timestamp = datetime.now()
+        self.id = post_id 
         self.author = author
         self.text = text
-        self.timestamp = datetime.now()
+        self.timestamp = timestamp
 
     def __str__(self):
         time = self.timestamp.strftime("%b %d, %I:%M %p")
@@ -34,11 +38,13 @@ class Post:
         hashtags = re.findall(r"#(\w+)", self.text.lower())
         return tag in hashtags
     
-    def get_post(self, post_id):
+    def to_dict(self):
         """
-        Find a post by its post_id
+        Turn the post into a String to be saved in JSON can save
         """
-        for post in self.all_posts:
-            if post.id == post_id:
-                return post
-        return None
+        return {
+            "id": self.id,
+            "author": self.author.username,
+            "text": self.text,
+            "timestamp": self.timestamp.isoformat()
+        }
