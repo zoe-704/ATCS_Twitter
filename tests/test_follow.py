@@ -34,7 +34,6 @@ def test_unfollow():
 def test_unfollow_when_not_following():
     ellen = User("ellensakoda", "pw1", "Ellen", 16)
     zoe = User("zoesun", "pw2", "Zoe", 17)
-    ellen.follow(zoe)
     with pytest.raises(NotFollowingError):
         ellen.unfollow(zoe)
 
